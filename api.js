@@ -30,28 +30,6 @@ app.get('/wallets', async (req, res) => {
   }
 });
 
-app.get('/notify', async (req, res) => {
-  try {
-    const [pageId, appId, bearerToken] = fs.readFileSync('../easypayData.dat', 'utf-8').split(/\r?\n/);
-    if (pageId === undefined) {
-      return await res.status(401).send('Token is unvailable.');
-    };
-    const easypay = await axios({
-      url: 'https://api.easypay.ua/api/userNotifications/all',
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`,
-        'AppId': appId,
-        'PageId': pageId
-      }
-    });
-    return await res.status(200).send(easypay.data.wallets);
-  } catch(err) {
-    console.log(err.message);
-    return await res.status(500).send('Request to EasyPay API Failed.');
-  }
-});
-
 
 
 app.get('/getWalletById', async (req, res) => {
